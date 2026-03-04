@@ -24,8 +24,8 @@ RUN apt-get update && \
 
 COPY . .
 
-# 复制 frontend.zip（如果存在）
-COPY frontend.zip* /build/ || true
+# 复制 frontend.zip
+COPY frontend.zip /build/
 
 # 根据构建选项，设置编译参数并构建项目
 RUN \

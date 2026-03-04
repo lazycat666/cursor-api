@@ -26,14 +26,12 @@ COPY . .
 
 # 根据构建选项，设置编译参数并构建项目
 RUN \
-    # 根据架构设置编译目标和优化的 CPU 型号
+    # 根据架构设置编译目标
     case "$TARGETARCH" in \
         amd64) \
-            TARGET_TRIPLE="x86_64-unknown-linux-musl"; \
-            TARGET_CPU="x86-64-v3" ;; \
+            TARGET_TRIPLE="x86_64-unknown-linux-musl" ;; \
         arm64) \
-            TARGET_TRIPLE="aarch64-unknown-linux-musl"; \
-            TARGET_CPU="neoverse-n1" ;; \
+            TARGET_TRIPLE="aarch64-unknown-linux-musl" ;; \
         *) echo "Unsupported architecture: $TARGETARCH" && exit 1 ;; \
     esac && \
     \

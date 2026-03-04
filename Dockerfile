@@ -24,6 +24,9 @@ RUN apt-get update && \
 
 COPY . .
 
+# 复制 frontend.zip（如果存在）
+COPY frontend.zip* /build/ || true
+
 # 根据构建选项，设置编译参数并构建项目
 RUN \
     # 根据架构设置编译目标
@@ -56,7 +59,8 @@ RUN \
     fi && \
     \
     mkdir -p /app && \
-    cp target/$TARGET_TRIPLE/release/cursor-api /app/
+    cp target/$TARGET_TRIPLE/release/cursor-api /app/ && \
+    if [ -f /build/frontend.zip ]; then cp /build/frontend.zip /app/; fi
 
 # ==================== 运行阶段 ====================
 FROM alpine:latest

@@ -60,7 +60,8 @@ RUN \
     \
     mkdir -p /app && \
     cp target/$TARGET_TRIPLE/release/cursor-api /app/ && \
-    if [ -f /build/frontend.zip ]; then cp /build/frontend.zip /app/; fi
+    if [ -f /build/frontend.zip ]; then cp /build/frontend.zip /app/; fi && \
+    if [ -f /build/static/route_registry.json ]; then cp /build/static/route_registry.json /app/; fi
 
 # ==================== 运行阶段 ====================
 FROM alpine:latest

@@ -66,10 +66,14 @@ RUN \
     cp target/$TARGET_TRIPLE/release/cursor-api /app/
 
 # ==================== 运行阶段 ====================
-FROM scratch
+FROM alpine:latest
 
-# 从构建阶段复制二进制文件，并设置为非 root 用户所有
-COPY --chown=1001:1001 --chmod=0700 --from=builder /app /app
+# 安装必要的运行时依赖
+RUN apk add --no-cache ca-certificates tzdata && \
+    adduser -D -u 1001 appuser
+
+# 从构建阶段复制二进制文件
+COPY --from=builder --chown=1001:1001 --chmod=0700 /app /app
 
 WORKDIR /app
 

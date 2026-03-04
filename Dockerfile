@@ -43,18 +43,13 @@ RUN \
     if [ "$BUILD_COMPAT" = "true" ]; then FEATURES="$FEATURES __compat"; fi && \
     FEATURES=$(echo "$FEATURES" | xargs) && \
     \
-    # 准备 RUSTFLAGS，兼容模式下移除特定 CPU 优化以获得更好的兼容性
+    # 准备 RUSTFLAGS，使用通用 CPU 目标以获得最大兼容性
     RUSTFLAGS_BASE="-C link-arg=-s -C link-arg=-fuse-ld=lld -C target-feature=+crt-static -A unused" && \
-    if [ "$BUILD_COMPAT" = "true" ]; then \
-        export RUSTFLAGS="$RUSTFLAGS_BASE"; \
-    else \
-        export RUSTFLAGS="$RUSTFLAGS_BASE -C target-cpu=$TARGET_CPU"; \
-    fi && \
+    export RUSTFLAGS="$RUSTFLAGS_BASE" && \
     \
-    # 执行构建
+    # 执行构建（使用通用 CPU 目标以获得最大兼容性）
     # -C link-arg=-s: 移除符号表以减小体积
     # -C target-feature=+crt-static: 静态链接 C 运行时
-    # -C target-cpu: 针对特定 CPU 优化
     # -A unused: 允许未使用的代码
     if [ -n "$FEATURES" ]; then \
         cargo build --bin cursor-api --release --target=$TARGET_TRIPLE --features "$FEATURES"; \
